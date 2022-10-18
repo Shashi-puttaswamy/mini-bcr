@@ -4,7 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>crawler</module>
-        <module>consumer</module>
+        <module>mention-generator</module>
+        <module>query-api</module>
+        <module>mention-storer</module>
+        <module>mention-api</module>
+        <module>common-lib</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

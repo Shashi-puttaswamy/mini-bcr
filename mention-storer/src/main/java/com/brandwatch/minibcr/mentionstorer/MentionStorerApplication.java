@@ -1,14 +1,13 @@
-package com.brandwatch.minibcr.consumer;
-
+package com.brandwatch.minibcr.mentionstorer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ConsumerApplication
+public class MentionStorerApplication
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(ConsumerApplication.class);
+        SpringApplication.run(MentionStorerApplication.class);
     }
 }
