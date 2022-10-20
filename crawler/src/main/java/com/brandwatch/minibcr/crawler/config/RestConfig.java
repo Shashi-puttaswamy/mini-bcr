@@ -28,7 +28,7 @@ public class RestConfig {
 
     private StringHttpMessageConverter getStringConverter() {
         StringHttpMessageConverter converter = new StringHttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_FORM_URLENCODED));
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
         return converter;
     }
 

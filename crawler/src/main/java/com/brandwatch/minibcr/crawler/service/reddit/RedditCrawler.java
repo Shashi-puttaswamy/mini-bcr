@@ -1,6 +1,7 @@
 package com.brandwatch.minibcr.crawler.service.reddit;
 
 import com.brandwatch.minibcr.crawler.model.Resource;
+import com.brandwatch.minibcr.crawler.model.reddit.SubReddit;
 import com.brandwatch.minibcr.crawler.service.Crawler;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
@@ -13,40 +14,59 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class RedditCrawler implements Crawler {
 
     private static final String SUBREDDIT_NAME = "phone";
+    private static final String REDDIT_URL = "https://oauth.reddit.com/r/%s/new?limit=100";
 
     private final RedditAuthenticator authenticator;
     private final RedditClient redditClient;
 
     private final RestTemplate restTemplate;
 
+    private final Producer producer;
 
-    public RedditCrawler(RedditAuthenticator authenticator, RedditClient redditClient, RestTemplate restTemplate) {
+
+    public RedditCrawler(
+            RedditAuthenticator authenticator,
+            RedditClient redditClient,
+            RestTemplate restTemplate,
+            Producer producer
+    ) {
         this.authenticator = authenticator;
         this.redditClient = redditClient;
         this.restTemplate = restTemplate;
+        this.producer = producer;
     }
 
     @Override
-    public List<Resource> crawl() {
+    public void crawl() {
         String token = authenticator.authenticate(redditClient);
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
         headers.put("User-Agent",
                 Collections.singletonList(redditClient.getClientName()));
-        //TODO SubReddit Object and Map to Resource object serialize and send to queue.
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-        String url = "https://oauth.reddit.com/r/"+ SUBREDDIT_NAME + "/new?limit=100";
-        ResponseEntity<Map<String,Object>> response
-                = restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<Map<String,Object>>() {
+        ResponseEntity<SubReddit> response
+                = restTemplate.exchange(getRedditUrl(), HttpMethod.GET, entity, new ParameterizedTypeReference<SubReddit>() {
         });
-        return null;
+        if(response.getBody() == null) {
+            return;
+        }
+        sendToKafka(response.getBody());
+    }
+
+    private void sendToKafka(SubReddit subReddit) {
+        for(SubReddit childSubreddit : subReddit.getData().getChildren()) {
+            Resource resource = new Resource(childSubreddit.getTittle(),childSubreddit.getSelftext());
+            producer.sendMessage(resource);
+        }
+    }
+
+    private String getRedditUrl() {
+        return String.format(REDDIT_URL,SUBREDDIT_NAME);
     }
 
 }

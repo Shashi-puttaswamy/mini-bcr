@@ -1,8 +1,8 @@
 package com.brandwatch.minibcr.crawler.model;
 
 public class Resource {
-    private String title;
-    private String text;
+    private final String title;
+    private final String text;
 
     public Resource(String title, String text) {
         this.title = title;

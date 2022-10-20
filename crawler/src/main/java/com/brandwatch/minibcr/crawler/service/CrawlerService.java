@@ -1,9 +1,5 @@
 package com.brandwatch.minibcr.crawler.service;
 
-import com.brandwatch.minibcr.crawler.model.Resource;
-
-import java.util.List;
-
 public class CrawlerService implements Crawler{
 
     private final Crawler crawler;
@@ -12,7 +8,7 @@ public class CrawlerService implements Crawler{
         this.crawler = crawler;
     }
 
-    public List<Resource> crawl(){
-        return this.crawler.crawl();
+    public void crawl(){
+         this.crawler.crawl();
     }
 }
