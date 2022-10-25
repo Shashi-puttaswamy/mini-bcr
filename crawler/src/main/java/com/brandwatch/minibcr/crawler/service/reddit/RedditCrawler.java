@@ -1,10 +1,7 @@
 package com.brandwatch.minibcr.crawler.service.reddit;
 
-import com.brandwatch.minibcr.crawler.model.Resource;
-import com.brandwatch.minibcr.crawler.model.reddit.SubReddit;
-import com.brandwatch.minibcr.crawler.service.Crawler;
-import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
-import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
+import java.util.Collections;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
+import com.brandwatch.minibcr.common.model.Resource;
+import com.brandwatch.minibcr.crawler.model.reddit.SubReddit;
+import com.brandwatch.minibcr.crawler.service.Crawler;
+import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
+import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
+
 
 @Service
 public class RedditCrawler implements Crawler {
@@ -50,23 +52,24 @@ public class RedditCrawler implements Crawler {
                 Collections.singletonList(redditClient.getClientName()));
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         ResponseEntity<SubReddit> response
-                = restTemplate.exchange(getRedditUrl(), HttpMethod.GET, entity, new ParameterizedTypeReference<SubReddit>() {
-        });
-        if(response.getBody() == null) {
+                = restTemplate.exchange(getRedditUrl(), HttpMethod.GET, entity,
+                new ParameterizedTypeReference<SubReddit>() {
+                });
+        if (response.getBody() == null) {
             return;
         }
         sendToKafka(response.getBody());
     }
 
     private void sendToKafka(SubReddit subReddit) {
-        for(SubReddit childSubreddit : subReddit.getData().getChildren()) {
-            Resource resource = new Resource(childSubreddit.getTittle(),childSubreddit.getSelftext());
+        for (SubReddit childSubreddit : subReddit.getData().getChildren()) {
+            Resource resource = new Resource(childSubreddit.getTittle(), childSubreddit.getSelftext());
             producer.sendMessage(resource);
         }
     }
 
     private String getRedditUrl() {
-        return String.format(REDDIT_URL,SUBREDDIT_NAME);
+        return String.format(REDDIT_URL, SUBREDDIT_NAME);
     }
 
 }

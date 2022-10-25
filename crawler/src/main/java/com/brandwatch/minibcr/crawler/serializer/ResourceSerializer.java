@@ -1,8 +1,11 @@
 package com.brandwatch.minibcr.crawler.serializer;
 
-import com.brandwatch.minibcr.crawler.model.Resource;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.brandwatch.minibcr.common.model.Resource;
+
 
 public class ResourceSerializer implements Serializer<Resource> {
 
@@ -11,10 +14,10 @@ public class ResourceSerializer implements Serializer<Resource> {
         ObjectMapper mapper = new ObjectMapper();
         byte[] resourceBytes = null;
         try {
-            resourceBytes  = mapper.writeValueAsString(resource).getBytes();
-        }catch (Exception e) {
+            resourceBytes = mapper.writeValueAsString(resource).getBytes();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return resourceBytes ;
+        return resourceBytes;
     }
 }

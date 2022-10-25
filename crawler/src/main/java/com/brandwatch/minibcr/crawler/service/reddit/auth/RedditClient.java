@@ -1,12 +1,13 @@
 package com.brandwatch.minibcr.crawler.service.reddit.auth;
 
 public class RedditClient {
+
     private final String clientId;
     private final String secret;
 
     private final String clientName;
 
-    public RedditClient(String clientId, String secret,String clientName) {
+    public RedditClient(String clientId, String secret, String clientName) {
         this.clientId = clientId;
         this.secret = secret;
         this.clientName = clientName;

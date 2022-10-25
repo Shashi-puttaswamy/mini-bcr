@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
-public class KafkaTopicConfig{
+public class KafkaTopicConfig {
 
     @Value(value = "${kafka.resource.topic.name}")
     private String resourceTopicName;

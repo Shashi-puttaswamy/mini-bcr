@@ -1,6 +1,10 @@
 package com.brandwatch.minibcr.crawler.service.reddit;
 
-import com.brandwatch.minibcr.crawler.model.Resource;
+
+import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -8,10 +12,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Random;
+import com.brandwatch.minibcr.common.model.Resource;
+
 
 @Service
 public class Producer {
@@ -27,14 +30,15 @@ public class Producer {
     @Value(value = "${kafka.resource.topic.name}")
     private String topicName;
 
-
     public void sendMessage(Resource message) {
-        ListenableFuture<SendResult<String, Resource>> future = kafkaTemplate.send(topicName, new Random().nextLong() + "", message);
+        ListenableFuture<SendResult<String, Resource>> future =
+                kafkaTemplate.send(topicName, new Random().nextLong() + "", message);
         future.addCallback(new ListenableFutureCallback<SendResult<String, Resource>>() {
 
             @Override
             public void onSuccess(SendResult<String, Resource> result) {
-                logger.info("sent message with offset -" + result.getRecordMetadata().offset());
+                logger.info("sent message with offset -"
+                        + result.getRecordMetadata().offset());
             }
 
             @Override

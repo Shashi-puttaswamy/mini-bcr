@@ -1,13 +1,8 @@
 package com.brandwatch.minibcr.common;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+public class CommonApplication {
 
-@SpringBootApplication
-public class CommonApplication
-{
-    public static void main( String[] args )
-    {
-        SpringApplication.run(CommonApplication.class);
-    }
+  public static void main(String[] args) {
+    System.out.println("this is common application for libs");
+  }
 }

@@ -3,6 +3,7 @@ package com.brandwatch.minibcr.crawler.model.reddit;
 import java.util.List;
 
 public class SubReddit {
+
     private SubReddit data;
     private List<SubReddit> children;
 

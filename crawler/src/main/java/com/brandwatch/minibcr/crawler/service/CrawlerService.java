@@ -1,6 +1,6 @@
 package com.brandwatch.minibcr.crawler.service;
 
-public class CrawlerService implements Crawler{
+public class CrawlerService implements Crawler {
 
     private final Crawler crawler;
 
@@ -8,7 +8,7 @@ public class CrawlerService implements Crawler{
         this.crawler = crawler;
     }
 
-    public void crawl(){
-         this.crawler.crawl();
+    public void crawl() {
+        this.crawler.crawl();
     }
 }
