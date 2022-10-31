@@ -1,7 +1,6 @@
 package com.brandwatch.minibcr.queryapi.entity;
 
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,7 +18,7 @@ import org.hibernate.annotations.CreationTimestamp;
 public class UserQuery {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private long id;
     @Column(name = "query", nullable = false)
@@ -43,10 +42,6 @@ public class UserQuery {
     public UserQuery setQuery(String query) {
         this.query = query;
         return this;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
     }
 
     public UserQuery setCreatedDate(Date createdDate) {
