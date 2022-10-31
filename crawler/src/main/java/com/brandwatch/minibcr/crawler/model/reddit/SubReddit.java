@@ -9,14 +9,14 @@ public class SubReddit {
 
     private String selftext;
 
-    private String tittle;
+    private String title;
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setData(SubReddit data) {
