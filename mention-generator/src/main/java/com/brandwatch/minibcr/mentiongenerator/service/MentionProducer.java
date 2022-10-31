@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import com.brandwatch.minibcr.mentiongenerator.model.Mention;
+import com.brandwatch.minibcr.common.model.Mention;
 
 @Service
-public class Producer {
-    private final Logger logger = LoggerFactory.getLogger(Producer.class);
+public class MentionProducer {
+    private final Logger logger = LoggerFactory.getLogger(MentionProducer.class);
 
     private final KafkaTemplate<String, Mention> kafkaTemplate;
 
-    public Producer(KafkaTemplate<String, Mention> kafkaTemplate) {
+    public MentionProducer(KafkaTemplate<String, Mention> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

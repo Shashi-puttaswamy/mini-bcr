@@ -1,6 +1,4 @@
-package com.brandwatch.minibcr.mentiongenerator.model;
-
-import com.brandwatch.minibcr.common.model.Resource;
+package com.brandwatch.minibcr.common.model;
 
 public class Mention {
 
@@ -10,5 +8,13 @@ public class Mention {
     public Mention(long queryId, Resource resource) {
         this.queryId = queryId;
         this.resource = resource;
+    }
+
+    public long getQueryId() {
+        return queryId;
+    }
+
+    public Resource getResource() {
+        return resource;
     }
 }

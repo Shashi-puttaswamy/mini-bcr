@@ -2,50 +2,34 @@ package com.brandwatch.minibcr.mentiongenerator.config;
 
 import java.io.IOException;
 
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.brandwatch.minibcr.mentiongenerator.service.lucene.LuceneStandardAnalyzer;
-
 @Configuration
 public class LuceneConfig {
 
     @Bean
-    public LuceneStandardAnalyzer luceneStandardAnalyzer() {
-        return new LuceneStandardAnalyzer();
+    public StandardAnalyzer standardAnalyzer() {
+        return new StandardAnalyzer();
     }
 
     @Bean
-    public IndexWriterConfig indexWriterConfig() {
-        return new IndexWriterConfig(luceneStandardAnalyzer());
-    }
-
-    @Bean
-    public IndexWriter indexWriter() throws IOException {
-        return new IndexWriter(luceneDirectory(), indexWriterConfig());
-    }
-
-    @Bean
-    public Directory luceneDirectory() {
+    public Directory getDirectory() {
         return new RAMDirectory();
     }
 
     @Bean
-    public IndexReader indexReader() throws IOException {
-        return DirectoryReader.open(luceneDirectory());
+    public IndexWriterConfig getIndexWriterConfig() {
+        return new IndexWriterConfig(standardAnalyzer());
     }
 
     @Bean
-    public IndexSearcher indexSearcher() throws IOException {
-        return new IndexSearcher(indexReader());
+    public IndexWriter getIndexWriter() throws IOException {
+        return new IndexWriter(getDirectory(), getIndexWriterConfig());
     }
-
-
 }
