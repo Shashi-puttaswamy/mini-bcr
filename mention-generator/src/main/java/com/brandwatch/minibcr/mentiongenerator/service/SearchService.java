@@ -1,9 +1,5 @@
 package com.brandwatch.minibcr.mentiongenerator.service;
 
-import java.io.IOException;
-
-import org.apache.lucene.search.Query;
-
 import com.brandwatch.minibcr.mentiongenerator.service.lucene.LuceneSearch;
 import com.brandwatch.minibcr.mentiongenerator.service.lucene.LuceneSearchService;
 
@@ -21,7 +17,7 @@ public class SearchService implements LuceneSearch {
     }
 
     @Override
-    public boolean search(Query query) throws IOException {
-        return luceneSearchService.search(query);
+    public boolean search(String queryString) {
+        return luceneSearchService.search(queryString);
     }
 }

@@ -8,22 +8,23 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.Directory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LuceneSearchService implements LuceneSearch {
 
     private final IndexWriter indexWriter;
-    private final Directory directory;
 
-    public LuceneSearchService(IndexWriter indexWriter, Directory directory) {
+    public LuceneSearchService(IndexWriter indexWriter) {
         this.indexWriter = indexWriter;
-        this.directory = directory;
     }
 
     public void indexDocument(String title, String body) {
@@ -37,7 +38,8 @@ public class LuceneSearchService implements LuceneSearch {
         }
     }
 
-    public boolean search(Query query) throws IOException {
+    public boolean search(String queryString) {
+        Query query = getQuery(queryString);
         try {
             IndexReader reader = DirectoryReader.open(indexWriter);
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -48,5 +50,14 @@ public class LuceneSearchService implements LuceneSearch {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public BooleanQuery getQuery(String queryString) {
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        TermQuery catQuery1 = new TermQuery(new Term(LuceneResourceConstants.BODY, queryString));
+        TermQuery catQuery2 = new TermQuery(new Term(LuceneResourceConstants.TITLE, queryString));
+        builder.add(new BooleanClause(catQuery1, BooleanClause.Occur.SHOULD));
+        builder.add(new BooleanClause(catQuery2, BooleanClause.Occur.SHOULD));
+        return builder.build();
     }
 }
