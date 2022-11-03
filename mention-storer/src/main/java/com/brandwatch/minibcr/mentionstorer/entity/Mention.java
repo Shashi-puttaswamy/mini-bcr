@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
+import com.brandwatch.minibcr.common.model.Resource;
+
 @SolrDocument(collection = "mention")
 public class Mention {
 
@@ -20,6 +22,17 @@ public class Mention {
 
     @Indexed
     private long queryId;
+
+    @Field
+    private Resource resource;
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
 
     public Mention() {
     }
