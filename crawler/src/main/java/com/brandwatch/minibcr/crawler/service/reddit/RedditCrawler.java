@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.brandwatch.minibcr.common.model.Resource;
-import com.brandwatch.minibcr.crawler.model.reddit.SubReddit;
+import com.brandwatch.minibcr.crawler.model.reddit.Subreddit;
 import com.brandwatch.minibcr.crawler.service.Crawler;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
@@ -46,14 +46,10 @@ public class RedditCrawler implements Crawler {
     @Override
     public void crawl() {
         String token = authenticator.authenticate(redditClient);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        headers.put("User-Agent",
-                Collections.singletonList(redditClient.getClientName()));
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-        ResponseEntity<SubReddit> response
-                = restTemplate.exchange(getRedditUrl(), HttpMethod.GET, entity,
-                new ParameterizedTypeReference<SubReddit>() {
+        HttpEntity<String> redditEntity = getRedditEntity(token);
+        ResponseEntity<Subreddit> response
+                = restTemplate.exchange(getRedditUrl(), HttpMethod.GET, redditEntity,
+                new ParameterizedTypeReference<Subreddit>() {
                 });
         if (response.getBody() == null) {
             return;
@@ -61,8 +57,16 @@ public class RedditCrawler implements Crawler {
         sendToKafka(response.getBody());
     }
 
-    private void sendToKafka(SubReddit subReddit) {
-        for (SubReddit childSubreddit : subReddit.getData().getChildren()) {
+    private HttpEntity<String> getRedditEntity(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        headers.put("User-Agent",
+                Collections.singletonList(redditClient.getClientName()));
+        return new HttpEntity<>("parameters", headers);
+    }
+
+    private void sendToKafka(Subreddit subReddit) {
+        for (Subreddit childSubreddit : subReddit.getData().getChildren()) {
             Resource resource = new Resource(childSubreddit.getTittle(), childSubreddit.getSelftext());
             producer.sendMessage(resource);
         }

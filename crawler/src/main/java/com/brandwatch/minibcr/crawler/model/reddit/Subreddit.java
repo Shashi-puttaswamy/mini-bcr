@@ -2,10 +2,10 @@ package com.brandwatch.minibcr.crawler.model.reddit;
 
 import java.util.List;
 
-public class SubReddit {
+public class Subreddit {
 
-    private SubReddit data;
-    private List<SubReddit> children;
+    private Subreddit data;
+    private List<Subreddit> children;
 
     private String selftext;
 
@@ -19,19 +19,19 @@ public class SubReddit {
         this.tittle = tittle;
     }
 
-    public void setData(SubReddit data) {
+    public void setData(Subreddit data) {
         this.data = data;
     }
 
-    public void setChildren(List<SubReddit> children) {
+    public void setChildren(List<Subreddit> children) {
         this.children = children;
     }
 
-    public SubReddit getData() {
+    public Subreddit getData() {
         return data;
     }
 
-    public List<SubReddit> getChildren() {
+    public List<Subreddit> getChildren() {
         return children;
     }
 
@@ -39,7 +39,7 @@ public class SubReddit {
         return selftext;
     }
 
-    public SubReddit setSelftext(String selftext) {
+    public Subreddit setSelftext(String selftext) {
         this.selftext = selftext;
         return this;
     }
