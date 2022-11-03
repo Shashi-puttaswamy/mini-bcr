@@ -1,4 +1,4 @@
-package com.brandwatch.minibcr.mentionstorer.converter;
+package com.brandwatch.minibcr.mentionapi.converter;
 
 import java.io.IOException;
 

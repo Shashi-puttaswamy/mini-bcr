@@ -1,4 +1,4 @@
-package com.brandwatch.minibcr.mentionstorer.converter;
+package com.brandwatch.minibcr.mentionapi.converter;
 
 import java.io.IOException;
 
@@ -8,16 +8,17 @@ import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.brandwatch.minibcr.common.model.Resource;
+import com.brandwatch.minibcr.common.model.Mention;
+
 
 @ReadingConverter
-public enum StringToResourceConverter implements Converter<String, Resource> {
+public enum StringToMentionConverter implements Converter<String, Mention> {
     INSTANCE;
 
     @Override
-    public Resource convert(@NonNull String source) {
+    public Mention convert(@NonNull String source) {
         try {
-            return new ObjectMapper().readValue(source, Resource.class);
+            return new ObjectMapper().readValue(source, Mention.class);
         } catch (final IOException e) {
             throw new RuntimeException("Invalid string, unable to deserialize");
         }

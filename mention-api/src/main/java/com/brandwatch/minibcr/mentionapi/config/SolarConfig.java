@@ -1,4 +1,4 @@
-package com.brandwatch.minibcr.mentionstorer.config;
+package com.brandwatch.minibcr.mentionapi.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +16,20 @@ import org.springframework.data.solr.core.convert.SolrCustomConversions;
 import org.springframework.data.solr.core.mapping.SimpleSolrMappingContext;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 
-import com.brandwatch.minibcr.mentionstorer.converter.ResourceToStringConverter;
-import com.brandwatch.minibcr.mentionstorer.converter.StringToResourceConverter;
+import com.brandwatch.minibcr.mentionapi.converter.StringToMentionConverter;
+import com.brandwatch.minibcr.mentionapi.converter.StringToResourceConverter;
+
 
 @Configuration
-@EnableSolrRepositories(basePackages = "com.brandwatch.minibcr.mentionstorer.repository")
+@EnableSolrRepositories("com.brandwatch.minibcr.mentionapi.repository")
 public class SolarConfig {
 
 
     @Value("${spring.data.solr.host}")
     private String solrURL;
+
+    @Value("${solr.collection}")
+    private String solrCollection;
 
     @Bean
     public SolrClient solrClient() {
@@ -50,8 +54,13 @@ public class SolarConfig {
     public CustomConversions customConversions() {
         final List<Object> converters = new ArrayList<>();
         converters.add(StringToResourceConverter.INSTANCE);
-        converters.add(ResourceToStringConverter.INSTANCE);
+        converters.add(StringToMentionConverter.INSTANCE);
         return new SolrCustomConversions(converters);
+    }
+
+    @Bean
+    public String collectionName() {
+        return solrCollection;
     }
 
 

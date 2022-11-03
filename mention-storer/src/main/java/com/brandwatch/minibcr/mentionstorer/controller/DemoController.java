@@ -1,7 +1,5 @@
 package com.brandwatch.minibcr.mentionstorer.controller;
 
-import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,12 +31,6 @@ public class DemoController {
         mention.setQueryId(1L);
         mention.setResource(new Resource("testTitle", "testText"));
         mentionRepository.save(mention);
-        Iterable<Mention> mentionRepositoryAll = mentionRepository.findAll();
-        Iterator<Mention> iterator = mentionRepositoryAll.iterator();
-        while (iterator.hasNext()) {
-            logger.info(iterator.next().getTitle());
-            logger.info(iterator.next().getResource().getText());
-        }
     }
 
     @DeleteMapping
