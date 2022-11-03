@@ -56,7 +56,7 @@ public class RedditCrawlerTest {
 
     private Subreddit getSubredditTestData() {
         Subreddit child = new Subreddit();
-        child.setSelftext("test").setTittle("test");
+        child.setSelftext("test").setTitle("test");
         Subreddit parentSubreddit = new Subreddit();
         Subreddit dataSubreddit = new Subreddit();
         dataSubreddit.setChildren(Collections.singletonList(child));

@@ -67,7 +67,7 @@ public class RedditCrawler implements Crawler {
 
     private void sendToKafka(Subreddit subReddit) {
         for (Subreddit childSubreddit : subReddit.getData().getChildren()) {
-            Resource resource = new Resource(childSubreddit.getTittle(), childSubreddit.getSelftext());
+            Resource resource = new Resource(childSubreddit.getTitle(), childSubreddit.getSelftext());
             producer.sendMessage(resource);
         }
     }
