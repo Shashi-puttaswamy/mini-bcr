@@ -40,15 +40,15 @@ public class RedditCrawlerTest {
 
 
     @Test
-    public final void testCrawl() {
+    public final void crawler_shouldGetRedditData_whenAuthenticated() {
         RedditCrawler redditCrawler = new RedditCrawler(redditAuthenticator, redditClient, restTemplate, producer);
         when(redditAuthenticator.authenticate(Mockito.any())).thenReturn("test");
         when(redditClient.getClientName()).thenReturn("test");
         ResponseEntity<Subreddit> subRedditResponseEntity = new ResponseEntity<>(getSubredditTestData(), HttpStatus.OK);
         when(restTemplate.exchange(Mockito.anyString(),
-                        Mockito.any(), Mockito.any(),
-                        Mockito.eq(new ParameterizedTypeReference<Subreddit>() {
-                        })))
+                Mockito.any(), Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<Subreddit>() {
+                })))
                 .thenReturn(subRedditResponseEntity);
         redditCrawler.crawl();
         verify(redditClient, times(1)).getClientName();
