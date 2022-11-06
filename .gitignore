@@ -42,3 +42,6 @@ target/
 
 # Mac
 .DS_Store
+
+#backup file
+*.bak
