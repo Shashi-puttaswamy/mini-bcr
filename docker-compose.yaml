@@ -1,0 +1,44 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    hostname: kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    env_file:
+      - .env
+
+  solr:
+    image: solr:7.6
+    ports:
+      - "8983:8983"
+
+  mentionstorer:
+    build:
+      context: mention-storer/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - kafka
+      - solr
+
+  mentionapi:
+    build:
+      context: mention-api/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - solr
