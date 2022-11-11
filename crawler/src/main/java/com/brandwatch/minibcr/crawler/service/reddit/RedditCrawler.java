@@ -20,8 +20,7 @@ import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
 @Service
 public class RedditCrawler implements Crawler {
 
-    private static final String SUBREDDIT_NAME = "phone";
-    private static final String REDDIT_URL = "https://oauth.reddit.com/r/%s/new?limit=100";
+    private static final String REDDIT_URL = "https://oauth.reddit.com/phone/%s/new?limit=100";
 
     private final RedditAuthenticator authenticator;
     private final RedditClient redditClient;
@@ -48,7 +47,7 @@ public class RedditCrawler implements Crawler {
         String token = authenticator.authenticate(redditClient);
         HttpEntity<String> redditEntity = getRedditEntity(token);
         ResponseEntity<Subreddit> response
-                = restTemplate.exchange(getRedditUrl(), HttpMethod.GET, redditEntity,
+                = restTemplate.exchange(REDDIT_URL, HttpMethod.GET, redditEntity,
                 new ParameterizedTypeReference<Subreddit>() {
                 });
         if (response.getBody() == null) {
@@ -70,10 +69,6 @@ public class RedditCrawler implements Crawler {
             Resource resource = new Resource(childSubreddit.getTitle(), childSubreddit.getSelftext());
             producer.sendMessage(resource);
         }
-    }
-
-    private String getRedditUrl() {
-        return String.format(REDDIT_URL, SUBREDDIT_NAME);
     }
 
 }

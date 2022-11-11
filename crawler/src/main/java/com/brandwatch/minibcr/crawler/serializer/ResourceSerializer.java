@@ -9,12 +9,13 @@ import com.brandwatch.minibcr.common.model.Resource;
 
 public class ResourceSerializer implements Serializer<Resource> {
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public byte[] serialize(String topic, Resource resource) {
-        ObjectMapper mapper = new ObjectMapper();
         byte[] resourceBytes = null;
         try {
-            resourceBytes = mapper.writeValueAsString(resource).getBytes();
+            resourceBytes = objectMapper.writeValueAsString(resource).getBytes();
         } catch (Exception e) {
             e.printStackTrace();
         }
