@@ -34,13 +34,13 @@ public class MentionProducer {
 
             @Override
             public void onSuccess(SendResult<String, Mention> result) {
-                logger.info("sent message with offset -"
-                        + result.getRecordMetadata().offset());
+                logger.info("sent message with offset -{} ",
+                        +result.getRecordMetadata().offset());
             }
 
             @Override
             public void onFailure(@NonNull Throwable ex) {
-                logger.error("failed to send message - " + ex.getMessage());
+                logger.error("failed to send message -{} ", ex.getMessage());
             }
         });
     }
