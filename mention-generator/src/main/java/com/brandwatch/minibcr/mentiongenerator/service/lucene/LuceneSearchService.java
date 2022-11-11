@@ -1,6 +1,7 @@
 package com.brandwatch.minibcr.mentiongenerator.service.lucene;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -16,10 +17,14 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LuceneSearchService implements LuceneSearch {
+
+    private final Logger logger = LoggerFactory.getLogger(LuceneSearchService.class);
 
     private final IndexWriter indexWriter;
 
@@ -47,17 +52,17 @@ public class LuceneSearchService implements LuceneSearch {
             ScoreDoc[] hits = search.scoreDocs;
             return hits.length > 0;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(Arrays.toString(e.getStackTrace()));
         }
         return false;
     }
 
     public BooleanQuery getQuery(String queryString) {
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
-        TermQuery catQuery1 = new TermQuery(new Term(LuceneResourceConstants.BODY, queryString));
-        TermQuery catQuery2 = new TermQuery(new Term(LuceneResourceConstants.TITLE, queryString));
-        builder.add(new BooleanClause(catQuery1, BooleanClause.Occur.SHOULD));
-        builder.add(new BooleanClause(catQuery2, BooleanClause.Occur.SHOULD));
+        TermQuery bodyTermQuery = new TermQuery(new Term(LuceneResourceConstants.BODY, queryString));
+        TermQuery tittleTermQuery = new TermQuery(new Term(LuceneResourceConstants.TITLE, queryString));
+        builder.add(new BooleanClause(bodyTermQuery, BooleanClause.Occur.SHOULD));
+        builder.add(new BooleanClause(tittleTermQuery, BooleanClause.Occur.SHOULD));
         return builder.build();
     }
 }

@@ -13,13 +13,13 @@ import org.springframework.web.client.RestTemplate;
 import com.brandwatch.minibcr.mentiongenerator.model.UserQuery;
 
 @Service
-public class QueryClient {
+public class QueryService {
 
     private static final String URL = "http://localhost:8084/query";
 
     private final RestTemplate restTemplate;
 
-    public QueryClient(RestTemplate restTemplate) {
+    public QueryService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
