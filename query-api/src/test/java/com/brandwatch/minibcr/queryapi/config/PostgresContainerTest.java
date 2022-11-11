@@ -11,7 +11,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = {PostgresContainerTest.Initializer.class})
-public class PostgresContainerTest {
+public class PostgresContainerTest extends RedisContainerTest {
 
     @ClassRule
     public static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:13.1")
