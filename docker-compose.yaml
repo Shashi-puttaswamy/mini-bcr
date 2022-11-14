@@ -36,3 +36,29 @@ services:
       - .env
     depends_on:
       - kafka
+
+  solr:
+    image: solr:7.6
+    ports:
+      - "8983:8983"
+
+  mentionstorer:
+    build:
+      context: mention-storer/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - kafka
+      - solr
+
+  mentionapi:
+    build:
+      context: mention-api/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - solr
