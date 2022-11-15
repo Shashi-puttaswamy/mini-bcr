@@ -26,6 +26,8 @@
     <java.version>11</java.version>
     <version.testcontainers>1.17.5</version.testcontainers>
     <junit_version>4.13.2</junit_version>
+    <mockito.version>1.10.19</mockito.version>
+    <mockito.bom.version>4.8.1</mockito.bom.version>
   </properties>
 
   <dependencyManagement>
@@ -40,6 +42,18 @@
         <artifactId>solr</artifactId>
         <version>${version.testcontainers}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-bom</artifactId>
+        <version>${mockito.bom.version}</version>
+        <type>pom</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -90,12 +104,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>1.10.19</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
