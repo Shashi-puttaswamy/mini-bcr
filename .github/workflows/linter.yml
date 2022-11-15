@@ -1,0 +1,26 @@
+---
+name: Lint Code Base
+
+on:
+  pull_request:
+    branches: [ master, main, develop ]
+
+jobs:
+  build:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the repo to be linted
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # run the linter
+      - name: Lint Code Base
+        uses: BrandwatchLtd/super-linter-action@HEAD #@HEAD ensures you always use the latest rules
+        env:
+          VALIDATE_ALL_CODEBASE: false #prevent validating files that are not part of the PR
+          DEFAULT_BRANCH: ${{ github.base_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
