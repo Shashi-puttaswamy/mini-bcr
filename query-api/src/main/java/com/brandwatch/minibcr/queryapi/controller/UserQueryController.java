@@ -16,7 +16,7 @@ import com.brandwatch.minibcr.queryapi.entity.UserQuery;
 import com.brandwatch.minibcr.queryapi.repository.UserQueryRepository;
 
 @RestController
-@RequestMapping("query")
+@RequestMapping("/query")
 public class UserQueryController {
 
     private final UserQueryRepository userQueryRepository;

@@ -2,6 +2,7 @@ package com.brandwatch.minibcr.mentiongenerator.service.query;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,9 @@ import com.brandwatch.minibcr.mentiongenerator.model.UserQuery;
 @Service
 public class QueryService {
 
-    private static final String URL = "http://localhost:8084/query";
+
+    @Value("${query.service.url}")
+    private String queryServiceUrl;
 
     private final RestTemplate restTemplate;
 
@@ -27,7 +30,7 @@ public class QueryService {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         ResponseEntity<List<UserQuery>> response
-                = restTemplate.exchange(URL, HttpMethod.GET, entity,
+                = restTemplate.exchange(this.queryServiceUrl, HttpMethod.GET, entity,
                 new ParameterizedTypeReference<List<UserQuery>>() {
                 });
         return response.getBody();

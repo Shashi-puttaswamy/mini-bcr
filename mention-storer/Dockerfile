@@ -6,4 +6,4 @@ COPY target/mention-storer-*.jar /mentionstorer/mentionstorer.jar
 
 WORKDIR /mentionstorer
 
-CMD ["java", "-jar", "mentionstorer.jar"]
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,address=0.0.0.0:5008,server=y,suspend=n","-jar", "mentionstorer.jar"]

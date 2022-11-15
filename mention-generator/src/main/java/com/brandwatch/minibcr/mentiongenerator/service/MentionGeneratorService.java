@@ -2,6 +2,8 @@ package com.brandwatch.minibcr.mentiongenerator.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.brandwatch.minibcr.common.model.Mention;
@@ -12,6 +14,8 @@ import com.brandwatch.minibcr.mentiongenerator.service.query.QueryService;
 
 @Service
 public class MentionGeneratorService {
+
+    private final Logger logger = LoggerFactory.getLogger(MentionGeneratorService.class);
 
     private final QueryService queryService;
     private final SearchService searchService;
