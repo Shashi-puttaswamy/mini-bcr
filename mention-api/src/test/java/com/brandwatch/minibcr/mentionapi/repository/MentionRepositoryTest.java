@@ -20,7 +20,7 @@ public class MentionRepositoryTest extends SolrContainerTest {
     @DisplayName("test solr integration test behaviour")
     public void shouldSaveMention() {
 
-        Mention mention = new Mention(1L,new Resource("title","test"));
+        Mention mention = new Mention(1L, new Resource("title", "test"));
         Mention savedMention = mentionRepository.save(mention);
 
         Assertions.assertEquals(mention.getQueryId(), savedMention.getQueryId());
