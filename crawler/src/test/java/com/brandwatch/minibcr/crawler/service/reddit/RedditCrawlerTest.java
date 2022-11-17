@@ -1,8 +1,11 @@
 package com.brandwatch.minibcr.crawler.service.reddit;
 
-import com.brandwatch.minibcr.crawler.model.reddit.SubReddit;
-import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
-import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,9 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-
-import static org.mockito.Mockito.times;
+import com.brandwatch.minibcr.crawler.model.reddit.Subreddit;
+import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
+import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -36,26 +39,26 @@ public class RedditCrawlerTest {
     private Producer producer;
 
 
-
     @Test
-    public final void crawl() {
-        RedditCrawler redditCrawler = new RedditCrawler(redditAuthenticator,redditClient,restTemplate,producer);
-        Mockito.when(redditAuthenticator.authenticate(Mockito.any())).thenReturn("test");
-        Mockito.when(redditClient.getClientName()).thenReturn("test");
-        ResponseEntity<SubReddit> subRedditResponseEntity = new ResponseEntity<>(getSubredditTestData(), HttpStatus.OK);
-        Mockito.when(restTemplate.exchange(Mockito.anyString(),
-                Mockito.any(),Mockito.any(),
-                        Mockito.eq(new ParameterizedTypeReference<SubReddit>() {})))
+    public final void crawler_shouldGetRedditData_whenAuthenticated() {
+        RedditCrawler redditCrawler = new RedditCrawler(redditAuthenticator, redditClient, restTemplate, producer);
+        when(redditAuthenticator.authenticate(Mockito.any())).thenReturn("test");
+        when(redditClient.getClientName()).thenReturn("test");
+        ResponseEntity<Subreddit> subRedditResponseEntity = new ResponseEntity<>(getSubredditTestData(), HttpStatus.OK);
+        when(restTemplate.exchange(Mockito.anyString(),
+                Mockito.any(), Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<Subreddit>() {
+                })))
                 .thenReturn(subRedditResponseEntity);
         redditCrawler.crawl();
-        Mockito.verify(redditClient, times(1)).getClientName();
+        verify(redditClient, times(1)).getClientName();
     }
 
-    private SubReddit getSubredditTestData() {
-        SubReddit child = new SubReddit();
-        child.setSelftext("test").setTittle("test");
-        SubReddit parentSubreddit = new SubReddit();
-        SubReddit dataSubreddit = new SubReddit();
+    private Subreddit getSubredditTestData() {
+        Subreddit child = new Subreddit();
+        child.setSelftext("test").setTitle("test");
+        Subreddit parentSubreddit = new Subreddit();
+        Subreddit dataSubreddit = new Subreddit();
         dataSubreddit.setChildren(Collections.singletonList(child));
         parentSubreddit.setData(dataSubreddit);
         return parentSubreddit;

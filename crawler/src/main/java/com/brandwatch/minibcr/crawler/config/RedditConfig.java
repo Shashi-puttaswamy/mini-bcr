@@ -1,5 +1,6 @@
 package com.brandwatch.minibcr.crawler.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,13 +10,15 @@ import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
 @Configuration
 public class RedditConfig {
 
-    private static final String CLIENT_ID = "Fll4jWWRYjJKYYZUHu6rSQ";
-    private static final String CLIENT_SECRET = "1A0gdRtSkCI31qumAMIRRIeSCql2tw";
-
-    private static final String CLIENT_NAME = "bw-crawler-test";
+    @Value("${reddit.client.id}")
+    private String clientId;
+    @Value("${reddit.client.secret}")
+    private String clientSecret;
+    @Value("${reddit.client.name}")
+    private String clientName;
 
     @Bean
     public RedditClient redditClient() {
-        return new RedditClient(CLIENT_ID, CLIENT_SECRET, CLIENT_NAME);
+        return new RedditClient(clientId, clientSecret, clientName);
     }
 }
