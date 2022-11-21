@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.brandwatch.minibcr.common.model.Resource;
-import com.brandwatch.minibcr.crawler.model.reddit.Subreddit;
+import com.brandwatch.minibcr.crawler.model.reddit.RedditListingChild;
+import com.brandwatch.minibcr.crawler.model.reddit.RedditListingResponse;
 import com.brandwatch.minibcr.crawler.service.Crawler;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
@@ -46,9 +47,9 @@ public class RedditCrawler implements Crawler {
     public void crawl() {
         String token = authenticator.authenticate(redditClient);
         HttpEntity<String> redditEntity = getRedditEntity(token);
-        ResponseEntity<Subreddit> response
+        ResponseEntity<RedditListingResponse> response
                 = restTemplate.exchange(REDDIT_URL, HttpMethod.GET, redditEntity,
-                new ParameterizedTypeReference<Subreddit>() {
+                new ParameterizedTypeReference<RedditListingResponse>() {
                 });
         if (response.getBody() == null) {
             return;
@@ -64,10 +65,13 @@ public class RedditCrawler implements Crawler {
         return new HttpEntity<>("parameters", headers);
     }
 
-    private void sendToKafka(Subreddit subReddit) {
-        for (Subreddit childSubreddit : subReddit.getData().getChildren()) {
-            Resource resource = new Resource(childSubreddit.getTitle(), childSubreddit.getSelftext());
-            producer.sendMessage(resource);
+    private void sendToKafka(RedditListingResponse redditListingResponse) {
+        for ( RedditListingChild redditListingChild : redditListingResponse.getData().getChildren()) {
+            String title = redditListingChild.getData().getTitle();
+            String body = redditListingChild.getData().getSelftext();
+            if(title != null || body != null) {
+                producer.sendMessage(new Resource(title, body));
+            }
         }
     }
 

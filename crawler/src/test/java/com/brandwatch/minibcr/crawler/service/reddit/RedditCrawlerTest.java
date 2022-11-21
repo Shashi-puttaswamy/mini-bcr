@@ -17,7 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.brandwatch.minibcr.crawler.model.reddit.Subreddit;
+import com.brandwatch.minibcr.crawler.model.reddit.RedditListingChild;
+import com.brandwatch.minibcr.crawler.model.reddit.RedditListingChildData;
+import com.brandwatch.minibcr.crawler.model.reddit.RedditListingData;
+import com.brandwatch.minibcr.crawler.model.reddit.RedditListingResponse;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditAuthenticator;
 import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
 
@@ -44,23 +47,25 @@ public class RedditCrawlerTest {
         RedditCrawler redditCrawler = new RedditCrawler(redditAuthenticator, redditClient, restTemplate, producer);
         when(redditAuthenticator.authenticate(Mockito.any())).thenReturn("test");
         when(redditClient.getClientName()).thenReturn("test");
-        ResponseEntity<Subreddit> subRedditResponseEntity = new ResponseEntity<>(getSubredditTestData(), HttpStatus.OK);
+        ResponseEntity<RedditListingResponse> subRedditResponseEntity = new ResponseEntity<>(getSubredditTestData(), HttpStatus.OK);
         when(restTemplate.exchange(Mockito.anyString(),
                 Mockito.any(), Mockito.any(),
-                Mockito.eq(new ParameterizedTypeReference<Subreddit>() {
+                Mockito.eq(new ParameterizedTypeReference<RedditListingResponse>() {
                 })))
                 .thenReturn(subRedditResponseEntity);
         redditCrawler.crawl();
         verify(redditClient, times(1)).getClientName();
     }
 
-    private Subreddit getSubredditTestData() {
-        Subreddit child = new Subreddit();
-        child.setSelftext("test").setTitle("test");
-        Subreddit parentSubreddit = new Subreddit();
-        Subreddit dataSubreddit = new Subreddit();
-        dataSubreddit.setChildren(Collections.singletonList(child));
-        parentSubreddit.setData(dataSubreddit);
-        return parentSubreddit;
+    private RedditListingResponse getSubredditTestData() {
+        RedditListingChildData childData = new RedditListingChildData();
+        childData.setSelftext("test").setTitle("test");
+        RedditListingChild parentSubreddit = new RedditListingChild();
+        parentSubreddit.setData(childData);
+        RedditListingData redditListingData = new RedditListingData();
+        redditListingData.setChildren(Collections.singletonList(parentSubreddit));
+        RedditListingResponse redditListingResponse = new RedditListingResponse();
+        redditListingResponse.setData(redditListingData);
+        return redditListingResponse;
     }
 }
