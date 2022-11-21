@@ -19,6 +19,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,8 +29,9 @@ public class LuceneSearchService implements LuceneSearch {
 
     private final IndexWriter indexWriter;
 
-    public LuceneSearchService(IndexWriter indexWriter) {
-        this.indexWriter = indexWriter;
+
+    public LuceneSearchService(@Qualifier("createIndexWriter") IndexWriter createIndexWriter) {
+        this.indexWriter = createIndexWriter;
     }
 
     public void indexDocument(String title, String body) {

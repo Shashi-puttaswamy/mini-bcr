@@ -28,8 +28,13 @@ public class LuceneConfig {
         return new IndexWriterConfig(standardAnalyzer());
     }
 
-    @Bean
+    @Bean(name = "updateIndexWriter")
     public IndexWriter getIndexWriter() throws IOException {
         return new IndexWriter(getDirectory(), getIndexWriterConfig());
+    }
+
+    @Bean(name = "createIndexWriter")
+    public IndexWriter getIndexWriterWithCreateMode() throws IOException {
+        return new IndexWriter(getDirectory(), getIndexWriterConfig().setOpenMode(IndexWriterConfig.OpenMode.CREATE));
     }
 }
