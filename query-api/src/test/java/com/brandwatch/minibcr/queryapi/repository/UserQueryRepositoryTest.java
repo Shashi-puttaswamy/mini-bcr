@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.brandwatch.minibcr.queryapi.config.PostgresContainerTest;
+import com.brandwatch.minibcr.queryapi.config.TestDbInitializer;
 import com.brandwatch.minibcr.queryapi.entity.UserQuery;
 
 @SpringBootTest
-public class UserQueryRepositoryTest extends PostgresContainerTest {
+public class UserQueryRepositoryTest extends TestDbInitializer {
 
     @Autowired
     private UserQueryRepository userQueryRepository;
