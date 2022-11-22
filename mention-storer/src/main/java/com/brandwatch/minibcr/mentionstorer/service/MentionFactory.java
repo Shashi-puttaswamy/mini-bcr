@@ -11,6 +11,7 @@ public class MentionFactory {
 
     public com.brandwatch.minibcr.mentionstorer.entity.Mention getMention(Mention mention) {
         com.brandwatch.minibcr.mentionstorer.entity.Mention mentionEntity = new com.brandwatch.minibcr.mentionstorer.entity.Mention();
+        mentionEntity.setResource(mention.getResource());
         mentionEntity.setTitle(mention.getResource().getTitle());
         mentionEntity.setBody(mention.getResource().getText());
         mentionEntity.setQueryId(mention.getQueryId());
