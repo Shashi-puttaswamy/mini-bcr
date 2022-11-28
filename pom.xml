@@ -24,8 +24,11 @@
   </modules>
   <properties>
     <java.version>11</java.version>
-    <version.testcontainers>1.17.5</version.testcontainers>
-    <junit_version>4.13.2</junit_version>
+    <junit.version>4.13.2</junit.version>
+    <testcontainers.version.postgres>1.15.1</testcontainers.version.postgres>
+    <testcontainers.version.solr>1.17.5</testcontainers.version.solr>
+    <testcontainers.version>1.17.5</testcontainers.version>
+    <lucene.version>7.4.0</lucene.version>
     <mockito.version>1.10.19</mockito.version>
     <mockito.bom.version>4.8.1</mockito.bom.version>
   </properties>
@@ -35,13 +38,34 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>${junit_version}</version>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.testcontainers</groupId>
-        <artifactId>solr</artifactId>
-        <version>${version.testcontainers}</version>
+        <artifactId>testcontainers</artifactId>
+        <version>${testcontainers.version}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${testcontainers.version.postgres}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-core</artifactId>
+        <version>${lucene.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-queryparser</artifactId>
+        <version>${lucene.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-analyzers-common</artifactId>
+        <version>${lucene.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
@@ -54,6 +78,12 @@
         <artifactId>mockito-bom</artifactId>
         <version>${mockito.bom.version}</version>
         <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>solr</artifactId>
+        <version>${testcontainers.version.solr}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -78,6 +108,11 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
       <exclusions>
@@ -86,11 +121,6 @@
           <artifactId>junit-vintage-engine</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -107,6 +137,18 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <url>https://repo1.maven.org/maven2</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -114,6 +156,14 @@
           <groupId>com.github.ekryd.sortpom</groupId>
           <artifactId>sortpom-maven-plugin</artifactId>
           <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>2.7.4</version>
+          <configuration>
+            <excludeDevtools>false</excludeDevtools>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

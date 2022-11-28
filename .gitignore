@@ -42,3 +42,12 @@ target/
 
 # Mac
 .DS_Store
+
+#backup file
+*.bak
+
+#maven wrapper
+
+.mvn/wrapper
+mvnw
+mvnw.cmd
