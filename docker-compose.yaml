@@ -26,6 +26,9 @@ services:
       - .env
     depends_on:
       - kafka
+    ports:
+      - "8090:8090"
+      - "5006:5006"
 
   crawler:
     build:
@@ -36,3 +39,77 @@ services:
       - .env
     depends_on:
       - kafka
+    ports:
+      - "8082:8082"
+      - "5005:5005"
+
+  solr:
+    image: solr:7.6
+    ports:
+      - "8983:8983"
+    env_file:
+      - .env
+
+  mentionstorer:
+    build:
+      context: mention-storer/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - kafka
+      - solr
+    ports:
+      - "8096:8096"
+      - "5008:5008"
+
+  mentionapi:
+    build:
+      context: mention-api/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - solr
+    ports:
+      - "8098:8098"
+      - "5009:5009"
+
+  postgres:
+    image: postgres:13
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./pgdata/postgres:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: bitnami/redis
+    ports:
+      - "6379:6379"
+    env_file:
+      - .env
+
+  queryapi:
+    build:
+      context: query-api/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8084:8084"
+      - "5007:5007"

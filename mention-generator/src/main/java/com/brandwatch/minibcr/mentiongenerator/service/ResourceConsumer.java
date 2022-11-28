@@ -1,8 +1,5 @@
 package com.brandwatch.minibcr.mentiongenerator.service;
 
-import java.io.IOException;
-
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +15,7 @@ public class ResourceConsumer {
     }
 
     @KafkaListener(topics = "${topic.name.consumer}", groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(Resource resource) throws IOException {
+    public void consume(Resource resource) {
         mentionGeneratorService.generate(resource);
     }
 }
