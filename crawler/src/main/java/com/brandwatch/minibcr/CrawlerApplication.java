@@ -1,11 +1,12 @@
-package com.brandwatch.minibcr.common;
+package com.brandwatch.minibcr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CommonApplication {
+public class CrawlerApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(CommonApplication.class);
+        SpringApplication.run(CrawlerApplication.class);
     }
 }
