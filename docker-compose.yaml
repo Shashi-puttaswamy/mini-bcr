@@ -17,6 +17,16 @@ services:
     env_file:
       - .env
 
+  mentiongenerator:
+    build:
+      context: mention-generator/
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - kafka
+
   crawler:
     build:
       context: crawler/
