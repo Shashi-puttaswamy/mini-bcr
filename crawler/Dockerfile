@@ -6,4 +6,4 @@ COPY target/crawler-*.jar /crawler/crawler.jar
 
 WORKDIR /crawler
 
-CMD ["java", "-jar", "crawler.jar"]
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,address=0.0.0.0:5005,server=y,suspend=n","-jar", "crawler.jar"]

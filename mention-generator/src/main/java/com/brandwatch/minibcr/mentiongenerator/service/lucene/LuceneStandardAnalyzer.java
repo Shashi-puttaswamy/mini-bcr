@@ -19,7 +19,7 @@ public class LuceneStandardAnalyzer extends Analyzer {
         TokenStream result = new StandardFilter(src);
         result = new LowerCaseFilter(result);
         result = new EnglishPossessiveFilter(result);
-        result = new StopFilter(result,  StandardAnalyzer.STOP_WORDS_SET);
+        result = new StopFilter(result, StandardAnalyzer.STOP_WORDS_SET);
         result = new PorterStemFilter(result);
         result = new CapitalizationFilter(result);
         return new TokenStreamComponents(src, result);

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.brandwatch.minibcr.common.model.Mention;
 
-
 @Service
 public class MentionConsumer {
 
