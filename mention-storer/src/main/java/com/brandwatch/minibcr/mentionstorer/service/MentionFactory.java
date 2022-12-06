@@ -4,13 +4,13 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.brandwatch.minibcr.common.model.Mention;
+import com.brandwatch.minibcr.mentionstorer.entity.Mention;
 
 @Service
 public class MentionFactory {
 
-    public com.brandwatch.minibcr.mentionstorer.entity.Mention getMention(Mention mention) {
-        com.brandwatch.minibcr.mentionstorer.entity.Mention mentionEntity = new com.brandwatch.minibcr.mentionstorer.entity.Mention();
+    public Mention getMention(com.brandwatch.minibcr.common.model.Mention mention) {
+        Mention mentionEntity = new Mention();
         mentionEntity.setResource(mention.getResource());
         mentionEntity.setTitle(mention.getResource().getTitle());
         mentionEntity.setBody(mention.getResource().getText());

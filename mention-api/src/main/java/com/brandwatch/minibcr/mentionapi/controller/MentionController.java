@@ -31,7 +31,7 @@ public class MentionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Mention>> mention() {
+    public ResponseEntity<List<Mention>> getMentions() {
         List<Mention> mentionList = new ArrayList<>();
         mentionRepository.findAll().iterator().forEachRemaining(mentionList::add);
         return new ResponseEntity<>(mentionList, HttpStatus.OK);
