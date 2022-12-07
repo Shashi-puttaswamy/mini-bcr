@@ -4,9 +4,12 @@ import java.time.Instant;
 
 public class Resource {
 
-    private final String title;
-    private final String text;
-    private final long createdTime;
+    private String title;
+    private String text;
+    private long createdTime;
+
+    public Resource() {
+    }
 
     public Resource(String title, String text) {
         this.title = title;

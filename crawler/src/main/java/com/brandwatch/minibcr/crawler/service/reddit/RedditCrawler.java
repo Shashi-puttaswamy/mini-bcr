@@ -21,7 +21,7 @@ import com.brandwatch.minibcr.crawler.service.reddit.auth.RedditClient;
 @Service
 public class RedditCrawler implements Crawler {
 
-    private static final String REDDIT_URL = "https://oauth.reddit.com/phone/%s/new?limit=100";
+    private static final String REDDIT_URL = "https://oauth.reddit.com/r/phone/new?limit=100";
 
     private final RedditAuthenticator authenticator;
     private final RedditClient redditClient;
@@ -66,10 +66,10 @@ public class RedditCrawler implements Crawler {
     }
 
     private void sendToKafka(RedditListingResponse redditListingResponse) {
-        for ( RedditListingChild redditListingChild : redditListingResponse.getData().getChildren()) {
+        for (RedditListingChild redditListingChild : redditListingResponse.getData().getChildren()) {
             String title = redditListingChild.getData().getTitle();
             String body = redditListingChild.getData().getSelftext();
-            if(title != null || body != null) {
+            if (title != null || body != null) {
                 producer.sendMessage(new Resource(title, body));
             }
         }

@@ -30,7 +30,7 @@
     <testcontainers.version>1.17.5</testcontainers.version>
     <lucene.version>7.4.0</lucene.version>
     <mockito.version>1.10.19</mockito.version>
-    <mockito.bom.version>4.8.1</mockito.bom.version>
+    <mockito.bom.version>3.1.0</mockito.bom.version>
   </properties>
 
   <dependencyManagement>

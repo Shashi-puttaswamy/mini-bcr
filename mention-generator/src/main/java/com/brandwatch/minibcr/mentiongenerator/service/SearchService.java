@@ -13,7 +13,7 @@ public class SearchService implements LuceneSearch {
 
     @Override
     public void indexDocument(String title, String body) {
-         luceneSearchService.indexDocument(title, body);
+        luceneSearchService.indexDocument(title, body);
     }
 
     @Override
